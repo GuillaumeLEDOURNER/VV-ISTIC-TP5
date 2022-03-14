@@ -1,37 +1,46 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.io.File;
+import java.io.FileWriter;
+import org.apache.commons.io.FileUtils;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
 public class HelloSelenium {
-    public static void main(String[] args) {
+
+
+    public static void main(String[] args) throws IOException {
         System.setProperty("webdriver.chrome.driver","tpSelenium/chromedriver");
 
         WebDriver driver = new ChromeDriver();
 
         driver.get("https://www.wikipedia.org/");
 
-        List<WebElement> allLinks = driver.findElements(By.xpath("//a[@href]"));
+        List<WebElement> allLinks;
+        int cpt = 10;
+        int randomInt = 0;
+        String url= "";
         Random r = new Random();
-        System.out.println(allLinks.size());
-        int i = r.nextInt(allLinks.size());
-        driver.get(allLinks.get(i).getAttribute("href"));
-        //allLinks.forEach((v)-> System.out.println(v.getAttribute("href")));
-        /*driver.manage().timeouts().implicitlyWait(Duration.ofMillis(500));
 
+        while(cpt > 0){
+            allLinks = driver.findElements(By.xpath("//a[@href]"));
+            randomInt = r.nextInt(allLinks.size());
+            url = allLinks.get(randomInt).getAttribute("href");
+            System.out.println("Url "+cpt+" : "+url);
+            driver.get(url);
+            cpt--;
 
-        WebElement searchBox = driver.findElement(By.name("q"));
-        WebElement searchButton = driver.findElement(By.name("btnK"));
+        }
+        TakesScreenshot scrShot =((TakesScreenshot)driver);
+//Call getScreenshotAs method to create image file
+        File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
+//Move image file to new destination
+        File DestFile=new File("image.jpg");
+//Copy file at destination
+        FileUtils.copyFile(SrcFile, DestFile);
 
-        searchBox.sendKeys("Selenium");
-        searchButton.click();
-
-        searchBox = driver.findElement(By.name("q"));
-        searchBox.getAttribute("value"); */// => "Selenium"
 
         driver.quit();
     }
