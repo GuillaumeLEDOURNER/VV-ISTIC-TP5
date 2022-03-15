@@ -2,7 +2,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.io.File;
-import java.io.FileWriter;
 import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.util.List;
@@ -34,14 +33,9 @@ public class HelloSelenium {
 
         }
         TakesScreenshot scrShot =((TakesScreenshot)driver);
-//Call getScreenshotAs method to create image file
         File SrcFile=scrShot.getScreenshotAs(OutputType.FILE);
-//Move image file to new destination
         File DestFile=new File("image.jpg");
-//Copy file at destination
         FileUtils.copyFile(SrcFile, DestFile);
-
-
         driver.quit();
     }
 }
